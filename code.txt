@@ -1,0 +1,5 @@
+while(p!=null)
+{
+    p = p.next;
+    p.data = 'Z';
+}

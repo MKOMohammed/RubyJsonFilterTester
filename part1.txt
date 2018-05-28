@@ -1,0 +1,62 @@
+class Link
+{
+    public Link next;
+    public Object data;
+    public Link(Object data, Link next)
+    {
+        this.data = data;
+        this.next = next;
+    }
+    public static Link CreateList(Object... elements)
+    {
+        Link current = null;
+        for(int i = elements.length -1; i>=0; i--)
+        {
+            current = new Link(elements[i],current);
+        }
+        return current;
+    }
+    public String toString()
+    {
+        StringBuilder output = new StringBuilder();
+        Link current = next;
+        output.append(data);
+        while (current!= null)
+        {
+            output.append(current.data);
+            current = current.next;
+        }
+        return output.toString();
+    }
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other == null)
+            return  false;
+        if(other.getClass() == this.getClass())
+        {
+            Link otherLink = (Link) other;
+            if(data.equals(otherLink.data))
+            {
+                if(next == null && otherLink.next == null)
+                    return true;
+                else
+                    return next.equals(otherLink.next);
+            }
+        }
+        return false;
+    }
+}
+public class Main
+{
+    Link head = Link.CreateList(1,2,3);
+    Link tail = head.next.next;
+    public static void endTraceNow(){}
+    public static void startTraceNow(){}
+    public static void main(String[] args) {
+       Link p = Link.CreateList('A','B','C','C');
+       changeNext(p, p);
+    }
+    public static Link changeNext(Link p, Link q)
+    {
+        startTraceNow();
