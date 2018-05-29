@@ -1,4 +1,4 @@
-while(p!=null)
+while(p.next!=null)
 {
     p = p.next;
     p.data = 'Z';

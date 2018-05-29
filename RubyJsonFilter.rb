@@ -3,6 +3,23 @@ class String
     Float(self) != nil rescue false
   end
 end
+class Filtered_Traces
+  def initialize(params = {})
+    @Traces = []
+    Convert_List_of_Json_Traces_to_Objects(params)
+  end
+  def Convert_Json_Trace_to_Object(trace)
+    require 'ostruct'
+    require 'json'
+    return JSON.parse(trace[1...-1].insert(0, '{'), object_class: OpenStruct)
+  end
+  def Convert_List_of_Json_Traces_to_Objects(list_of_traces)
+    for trace in list_of_traces
+      @Traces << Convert_Json_Trace_to_Object(trace)
+    end
+  end
+end
+
 def generate_backend_trace(junit_test_file, files_path, peruser_files_path, student_file_name)
   raw_code = junit_test_file
   raw_code.gsub! "\n", "\\n" + "\n"
@@ -89,9 +106,9 @@ class EventManager
 
   def trace_list
     my_list = []
-    (0...@filtered_events.length).each do |x|
+    (0...@list_of_events.length).each do |x|#@filtered_events.length).each do |x|
       #temp = Event.new
-      temp = @filtered_events[x]
+      temp = @list_of_events[x]#@filtered_events[x]
       my_list<<temp.trace
     end
     return my_list
@@ -143,9 +160,9 @@ class EventManager
     #else
     #  loop_counter = code.length
     #end
-    initial_line_number = @filtered_events[0].line_number #use this varialble to calculate the line number for every line
+    initial_line_number = @list_of_events[0].line_number#@filtered_events[0].line_number #use this varialble to calculate the line number for every line
     #while line_number != loop_counter
-    @filtered_events.each do |modify|
+    @list_of_events.each do |modify|#@filtered_events.each do |modify|
       #modify = Event.new
       #temp_string = ""
       #temp_line = 0
@@ -165,18 +182,21 @@ class EventManager
         modified_event = Event.new
         modified_event.set_event(temp_string)
         modified_event.set_line(line_number)# + 1)
-        @filtered_events[event_number] = modified_event
+        #@filtered_events[event_number] = modified_event
+        @list_of_events[event_number] = modified_event
 
         event_number = event_number + 1
         #line_number = line_number + 1
       end
     end
     #modify the last event (return statement event)
-    last_event = @filtered_events[event_number-1]
+    last_event = @list_of_events[event_number-1]
+    #last_event = @filtered_events[event_number-1]
     temp_line = last_event.line_number
     temp_string = last_event.trace
     old_line = temp_line.to_s
-    second_tl_event = @filtered_events[event_number - 2]
+    #second_tl_event = @filtered_events[event_number - 2]
+    second_tl_event = @list_of_events[event_number - 2]
     other_line = second_tl_event.line_number
     other_line = other_line +1 #+1 to point at the return statement instead of the last statement before the return
     new_line = other_line.to_s
@@ -184,7 +204,8 @@ class EventManager
     modified_event = Event.new
     modified_event.set_event(temp_string)
     modified_event.set_line(other_line)
-    @filtered_events[event_number-1] = modified_event
+    #@filtered_events[event_number-1] = modified_event
+    @list_of_events[event_number - 1] = modified_event
   end
 
 end
@@ -250,7 +271,7 @@ class Trace_analyzer
     @event_manager.modify_lines(user_code)
 
     raw_events = @event_manager.trace_list
-
+    filtered_out_events = Filtered_Traces.new(raw_events)
     clean_events = modify_stack(raw_events)
     #puts clean_events
     print_to_file = ''
