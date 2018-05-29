@@ -1,0 +1,12 @@
+#Temp files
+*~
+
+#Generated files
+Backend/nohup.out
+nohup.out
+*.pyc
+# Ignore all logfiles and tempfiles.
+/log/*.log
+/tmp
+/.idea
+/.vagrant
