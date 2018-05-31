@@ -1,22 +1,74 @@
+require 'yajl'
+require 'ostruct'
+require 'json'
+# class to extend String class by adding function to determine if the string is numeric or not
 class String
   def numeric?
     Float(self) != nil rescue false
   end
 end
-class Filtered_Traces
+
+# class to create new traces by removing all unnessesary data from generated traces
+class FilteredTraces
   def initialize(params = {})
-    @Traces = []
-    Convert_List_of_Json_Traces_to_Objects(params)
+    @traces_json_string = ''
+    @traces = []
+    @new_traces = []
+    @code = params[1]
+    @code << ''
+    @code << 'return statement'
+    remove_useless_traces_data(params)
   end
-  def Convert_Json_Trace_to_Object(trace)
-    require 'ostruct'
-    require 'json'
-    return JSON.parse(trace[1...-1].insert(0, '{'), object_class: OpenStruct)
+
+  def remove_useless_traces_data(params)
+    convert_list_of_json_traces_to_objects(params[0])
+    create_new_traces()
+    @traces_json_string = '[' + @traces_json_string[0...-1] + ']'
+    puts @traces_json_string
   end
-  def Convert_List_of_Json_Traces_to_Objects(list_of_traces)
-    for trace in list_of_traces
-      @Traces << Convert_Json_Trace_to_Object(trace)
+
+  def convert_json_trace_to_object(trace)
+    JSON.parse(trace[1...-1].insert(0, '{'), object_class: OpenStruct)
+  end
+
+  def convert_list_of_json_traces_to_objects(list_of_traces)
+    list_of_traces.each do |trace|
+      @traces << convert_json_trace_to_object(trace)
     end
+  end
+
+  def create_new_traces
+    @traces.each do |trace|
+      trace_stack = trace.stack_to_render[0]
+      trace_stack_ordered_variable_names = trace_stack.ordered_varnames
+      trace_stack_encoded_locals = trace_stack.encoded_locals
+      trace_heap = trace.heap
+      trace_code = @code[trace.line]
+      filtered_trace = filter_trace([
+                                      trace_stack_ordered_variable_names,
+                                      trace_stack_encoded_locals,
+                                      trace_heap,
+                                      trace_code
+                                    ])
+      @new_traces << filtered_trace
+      @traces_json_string += Yajl::Encoder.encode(filtered_trace) + ','
+    end
+  end
+
+  def filter_trace(params)
+    trace = {}
+    trace['stack'] = {}
+    trace['stack']['ordered_variable_names'] = params[0]
+    trace['stack']['encoded_locals'] = {}
+    params[1].each_pair do |key, value|
+      trace['stack']['encoded_locals'][key] = value
+    end
+    trace['heap'] = {}
+    params[2].each_pair do |key, value|
+      trace['heap'][key] = value if value.length > 2
+    end
+    trace['code'] = params[3]
+    trace
   end
 end
 
@@ -125,91 +177,33 @@ class EventManager
     end
   end
 
-  def verify_events
-    event_counter = 0
-    counter = 1
-    original_line_num = get_line_number(0)
-    current_line = original_line_num
-    length = @list_of_events.length - 1
-    while counter < length + 1
-      next_line = get_line_number(counter)
-      if (current_line + 1 == next_line && next_line > original_line_num) || (
-      current_line + 2 == next_line && next_line > original_line_num) || (
-      current_line + 3 == next_line && next_line > original_line_num) || (
-      current_line + 4 == next_line && next_line > original_line_num) || (
-      current_line + 5 == next_line && next_line > original_line_num)
-        @filtered_events << @list_of_events[event_counter]
-        event_counter += 1
-        current_line = next_line
-        counter += 1
-      else
-        current_line = next_line
-        event_counter += 1
-        counter += 1
-      end
-    end
-    @filtered_events << @list_of_events[length]
-  end
-
   def modify_lines (code)
     line_number = 0
     event_number = 0
-    #loop_counter = 0 #add this code to prevent an exception occured because of using {} in student solution code
-    #if @filtered_events.length < code.length 
-    #  loop_counter = @filtered_events.length
-    #else
-    #  loop_counter = code.length
-    #end
-    initial_line_number = @list_of_events[0].line_number#@filtered_events[0].line_number #use this varialble to calculate the line number for every line
-    #while line_number != loop_counter
-    @list_of_events.each do |modify|#@filtered_events.each do |modify|
-      #modify = Event.new
-      #temp_string = ""
-      #temp_line = 0
-
-      #modify = @filtered_events[event_number]
+    initial_line_number = @list_of_events[0].line_number
+    @list_of_events.each do |modify|
       temp_string = modify.trace
       temp_line = modify.line_number
       line_number = temp_line % initial_line_number
-      if code[line_number] == "newline"
+      if code[line_number] == 'newline'
         line_number += 1
-      elsif code[line_number] == "\\t"
+      elsif code[line_number] == '\\t'
         line_number += 1
       else
         original_line = temp_line.to_s
-        new_line = line_number.to_s #(line_number + 1).to_s
+        new_line = line_number.to_s
         temp_string.gsub! original_line, new_line
         modified_event = Event.new
         modified_event.set_event(temp_string)
-        modified_event.set_line(line_number)# + 1)
-        #@filtered_events[event_number] = modified_event
+        modified_event.set_line(line_number)
         @list_of_events[event_number] = modified_event
 
-        event_number = event_number + 1
-        #line_number = line_number + 1
+        event_number += 1
       end
     end
-    #modify the last event (return statement event)
-    last_event = @list_of_events[event_number-1]
-    #last_event = @filtered_events[event_number-1]
-    temp_line = last_event.line_number
-    temp_string = last_event.trace
-    old_line = temp_line.to_s
-    #second_tl_event = @filtered_events[event_number - 2]
-    second_tl_event = @list_of_events[event_number - 2]
-    other_line = second_tl_event.line_number
-    other_line = other_line +1 #+1 to point at the return statement instead of the last statement before the return
-    new_line = other_line.to_s
-    temp_string = temp_string.gsub old_line, new_line
-    modified_event = Event.new
-    modified_event.set_event(temp_string)
-    modified_event.set_line(other_line)
-    #@filtered_events[event_number-1] = modified_event
-    @list_of_events[event_number - 1] = modified_event
   end
-
 end
-
+# HERERERERERERER
 def modify_stack (my_list)
   old_stack = []
   curly_stack = []
@@ -220,17 +214,17 @@ def modify_stack (my_list)
     stacks = cur_event[1].split("],\"globals\"")
 
     stack_to_render = stacks[0]
-    old_stack<< stacks[0]
+    old_stac << stacks[0]
 
     stack_point = ''
 
-    for i in stack_to_render.split('') do
+    stack_to_render.split('').each do |i|
       stack_point += i
       if i == '{'
         curly_stack << i
       elsif i == '}'
-        top_symbol = curly_stack.pop
-        if curly_stack.length == 0
+        curly_stack.pop
+        if curly_stack.length.zero?
           list_of_stack_points << stack_point
           stack_point = ''
         else
@@ -253,142 +247,78 @@ def modify_stack (my_list)
     end
   end
 
-    (0...my_list.length).each do |x|
-      my_list[x].gsub!(old_stack[x], new_stack[x])
-    end
-  return my_list
+  (0...my_list.length).each do |x|
+    my_list[x].gsub!(old_stack[x], new_stack[x])
+  end
+  my_list
 end
 
-class Trace_analyzer
+# no comment
+class TraceAnalyzer
   def initialize
     @event_manager = EventManager.new
   end
 
-  def handleEverything(user_code, in_trace)
-    puts in_trace
-    exe_Point_Finder (in_trace)
-    @event_manager.verify_events
+  def handle_everything(user_code, in_trace)
+    exe_Point_Finder(in_trace)
     @event_manager.modify_lines(user_code)
-
     raw_events = @event_manager.trace_list
-    filtered_out_events = Filtered_Traces.new(raw_events)
-    clean_events = modify_stack(raw_events)
-    #puts clean_events
-    print_to_file = ''
-    # At this point, everything is ready for output. The printToFile string
-    # contains all of the information necessary for the javaScript file.
-    # Its about 20 lines down
-    #path = File.join(File.dirname(File.expand_path('..', __FILE__)),'frontendFiles', 'filteredJSON.js')
-    #f = File.new(path, "w+")
-      first = "var testvisualizerTrace = {\"code\":\""
-      code = ""
-      (0...user_code.length).each do |x|
-        if user_code[x] == "newline"
-          code = code + "\\n" + " "
-        else
-          code = code + user_code[x] + "\\n"
-        end
-      end
-
-
-      second = "\",\"trace\":["
-
-      trace = ""
-      (0...clean_events.length).each do |y|
-        if y == clean_events.length - 1
-          temp_string = clean_events[y]
-          temp_string = temp_string[0...-1]
-          trace = trace + temp_string
-          trace = trace + "],\"userlog\":\"Debugger VM maxMemory: 807M \\n \"}"
-          trace = trace + "\n\n" + "$(document).ready(function() { \n \n \t var testvisualizer = new ExecutionVisualizer('testvisualizerDiv', testvisualizerTrace,{embeddedMode: false, lang: 'java', heightChangeCallback: redrawAllVisualizerArrows}); \n \n \tfunction redrawAllVisualizerArrows() { \n \n \t \t if (testvisualizer) testvisualizer.redrawConnectors(); \n \t } \n \n $(window).resize(redrawAllVisualizerArrows); \n});"
-        else
-          temp_string = clean_events[y]
-          trace = trace + temp_string + "\n"
-        end
-      end
-
-
-      # String that contains everything for the javascript file
-      # Maybe just send string to front end and write to file in
-      # a directory accessible by the OpenDSA frontend?
-      print_to_file = first + code + second + trace
-      #f.print (print_to_file)
-
-
-    #f.close
-
-
-    return clean_events# it should be print_to_file
+    filtered_out_events = FilteredTraces.new([raw_events, user_code])
+    modify_stack(raw_events)
   end
 
-  def is_empty(any_structure)
-    if any_structure.length != 0
-      return false
-    else
-      return true
-    end
+  def empty?(any_structure)
+    any_structure.length.zero?
   end
 
-  def extract_Line_Num(string)
-
-    line = string.gsub '"', ' '
-    line.gsub! '{', ' '
-    line.gsub! ':', ' '
-    line.gsub! ',', ' '
-    line.gsub! '[', ' '
-    line.gsub! '(', ' '
-    line.gsub! ']', ' '
-    line.gsub! '}', ' '
-    line.gsub! ')', ' '
-
+  def extract_line_num(string)
+    line = string.tr '"', ' '
+    line.tr! '{', ' '
+    line.tr! ':', ' '
+    line.tr! ',', ' '
+    line.tr! '[', ' '
+    line.tr! '(', ' '
+    line.tr! ']', ' '
+    line.tr! '}', ' '
+    line.tr! ')', ' '
     new_line = []
-    for s in line.split() do
-      if s.numeric?
-        new_line << s.to_i
-      end
+    line.split.each do |s|
+      new_line << s.to_i if s.numeric?
     end
-
-    return new_line[0]
-
+    new_line[0]
   end
 
   def verify_exe_point(on, off, in_point)
-
     add_exe_point = false
     exe_trace = Event.new
-
     if on == true && off == false
       exe_trace.set_event(in_point)
-      exe_trace.set_line(extract_Line_Num(in_point))
+      exe_trace.set_line(extract_line_num(in_point))
       @event_manager.add_event(exe_trace)
       add_exe_point = true
-
     elsif on == false && off == false
       add_exe_point = false
     else
       add_exe_point = false
     end
-
-    return add_exe_point
+    add_exe_point
   end
 
   def exe_Point_Finder(trace)
     symbol_stack = []
     other_list = []
-    current_symbol = ''
     top_symbol = ''
     exe = ''
     exe_point = ' '
     on = false
     off = false
-
-    for i in trace.split('') do
+    trace.split('').each do |i|
       current_symbol = i
       exe_point += current_symbol
       if i == '{' or i == '[' or i == '('
         symbol_stack << i
       elsif i == '}' or i == ')' or i == ']'
-        if is_empty(symbol_stack) == false
+        if empty?(symbol_stack) == false
           top_symbol = symbol_stack.pop
           if i == '}' and top_symbol != '{'
             next
@@ -396,8 +326,8 @@ class Trace_analyzer
         end
       elsif i == ','
         other_list << exe_point
-        if symbol_stack.length == 0
-          for thing in other_list do
+        if symbol_stack.length.zero?
+          other_list.each do |thing|
             exe += thing
           end
           if exe.include? 'startTraceNow'
@@ -410,20 +340,13 @@ class Trace_analyzer
             return
           else
             flag = verify_exe_point(on, off, exe)
-            if flag == true
-              exe = ''
-              exe_point = ''
-              other_list = []
-            else
-              on = false
-              exe = ""
-              exe_point = ''
-              other_list = []
-            end
+            on = false if flag == false
+            exe = ''
+            exe_point = ''
+            other_list = []
           end
-
         else
-          exe_point = ""
+          exe_point = ''
         end
 
       else
@@ -433,92 +356,61 @@ class Trace_analyzer
   end
 end
 
-def is_empty(structure)
-  if structure.length == 0
-    return true
-  else
-    return false
-  end
+def empty?(structure)
+  structure.length.zero?
 end
 
 def code_splitter(code)
   student_code = []
-
-  code = code.split("startTraceNow();")
-  new_code = code[1].split("endTraceNow();")
-
+  code = code.split('startTraceNow();')
+  new_code = code[1].split('endTraceNow();')
   executed_code = new_code[0]
-
-  executed_code_list = executed_code.split("\\n")
-
+  executed_code_list = executed_code.split('\\n')
   flag = false
   counter = 0
-
   until flag
-    if executed_code_list[counter] == '' or executed_code_list[counter] == ' '
+    if executed_code_list[counter] == '' || executed_code_list[counter] == ' '
       flag = false
       counter += 1
     elsif executed_code_list[counter] != ''
       flag = true
     end
   end
-
   x = counter
-  while x<executed_code_list.length
+  while x < executed_code_list.length
     temp = executed_code_list[x]
     temp = temp.strip
-
-    if temp.empty?
-      student_code << 'newline'
-    else
-      student_code << executed_code_list[x]
-    end
-    x +=1
+    student_code << if temp.empty?
+                      'newline'
+                    else
+                      executed_code_list[x]
+                    end
+    x += 1
   end
-
-
-  return student_code
+  student_code
 end
 
 def code_analyzer(code, first_trace)
-  code_to_viz = []
   code_to_viz = code_splitter(code)
-
-  trace_analyzer = Trace_analyzer.new
-
-  execute = trace_analyzer.handleEverything(code_to_viz, first_trace)
-
-  return execute
+  trace_analyzer = TraceAnalyzer.new
+  trace_analyzer.handle_everything(code_to_viz, first_trace)
 end
-
 
 def main_method (file_path, student_full_code)
-  my_test = seperate_and_filter_trace(student_full_code, file_path, "cp/traceprinter/", "output.txt")
-  #html1 = File.open("htmlOutput1.txt", 'r')
-  #html2 = File.open("htmlOutput2.txt", 'r')
-  #path = File.join(File.dirname(File.expand_path('..', __FILE__)),'frontendFiles', 'result.html')
-  #output = File.new(path, 'w+')
-  #output.write(html1.read + my_test + html2.read)
+  my_test = seperate_and_filter_trace(student_full_code, file_path,
+                                      'cp/traceprinter/', 'output.txt')
   Dir.chdir('/home')
-  #puts my_test
-  return my_test
+  my_test
 end
 
-def create_student_full_code ()
+def create_student_full_code()
   puts Dir.pwd
   @student_code = ''
-  code_file = File.open('code.txt', 'rb') do |code_file|
+  File.open('code.txt', 'rb') do |code_file|
     code = code_file.read()
-    #code = code.split('return')[0].split('{')[1]
     code = code.split("\n")
-    code.each do |line|
-      unless line.empty?
-        @student_code += line + "\n"
-      end
-    end
-
+    code.each { |line| @student_code += line + "\n" unless line.empty? }
   end
-  #puts Dir.pwd
   File.open('part1.txt', 'rb') do |part1file|
     @part1 = part1file.read
   end
@@ -527,11 +419,7 @@ def create_student_full_code ()
   end
   full_student_code = @part1 + @student_code + "\n" + @part2
 
-return main_method("", full_student_code)
+  main_method('', full_student_code)
 end
 
 student_code = create_student_full_code()
-
-#To Do List:
-#1- digest the long trace int smallest possible one
-#2- Correct the modufy numbers method as it only return the trace fot the loop. so no matter the changes in the loop, the trace I got is the last trace in each loop iteration
