@@ -12,6 +12,7 @@ end
 class FilteredTraces
   def initialize(params = {})
     @traces_json_string = ''
+    @traces_json_array = []
     @traces = []
     @new_traces = []
     @code = params[1]
@@ -22,7 +23,7 @@ class FilteredTraces
 
   def remove_useless_traces_data(params)
     convert_list_of_json_traces_to_objects(params[0])
-    create_new_traces()
+    create_new_traces
     @traces_json_string = '[' + @traces_json_string[0...-1] + ']'
     puts @traces_json_string
   end
@@ -51,7 +52,9 @@ class FilteredTraces
                                       trace_code
                                     ])
       @new_traces << filtered_trace
-      @traces_json_string += Yajl::Encoder.encode(filtered_trace) + ','
+      trace_string = Yajl::Encoder.encode(filtered_trace)
+      @traces_json_array << trace_string
+      @traces_json_string += trace_string + ','
     end
   end
 
@@ -70,6 +73,10 @@ class FilteredTraces
     trace['code'] = params[3]
     trace
   end
+
+  def return_json_array
+    @traces_json_array
+  end
 end
 
 def generate_backend_trace(junit_test_file,
@@ -81,7 +88,7 @@ def generate_backend_trace(junit_test_file,
   raw_code.gsub! "\t", "\\t"
   lines = raw_code.split("\n")
   jUnit_test = ''
-  lines.each { |line| jUnit_test = jUnit_test + line}
+  lines.each { |line| jUnit_test += line}
   jUnit_test.gsub!('\"', "\\" + '\"')
   student_file = File.open(File.join(File.dirname(File.expand_path(__FILE__)),
                                      peruser_files_path,
@@ -204,55 +211,6 @@ class EventManager
     end
   end
 end
-# HERERERERERERER
-def modify_stack (my_list)
-  old_stack = []
-  curly_stack = []
-  list_of_stack_points = []
-
-  (0...my_list.length).each do |x|
-    cur_event = my_list[x].split("stack_to_render\":[")
-    stacks = cur_event[1].split("],\"globals\"")
-
-    stack_to_render = stacks[0]
-    old_stack << stacks[0]
-
-    stack_point = ''
-
-    stack_to_render.split('').each do |i|
-      stack_point += i
-      if i == '{'
-        curly_stack << i
-      elsif i == '}'
-        curly_stack.pop
-        if curly_stack.length.zero?
-          list_of_stack_points << stack_point
-          stack_point = ''
-        else
-          next
-        end
-      end
-    end
-  end
-
-  main = 'main:'
-
-  new_stack = []
-
-  (0...list_of_stack_points.length).each do |x|
-    if list_of_stack_points[x].include? main
-      # Do nothing
-      next
-    else
-      new_stack << list_of_stack_points[x]
-    end
-  end
-
-  (0...my_list.length).each do |x|
-    my_list[x].gsub!(old_stack[x], new_stack[x])
-  end
-  my_list
-end
 
 # no comment
 class TraceAnalyzer
@@ -265,7 +223,7 @@ class TraceAnalyzer
     @event_manager.modify_lines(user_code)
     raw_events = @event_manager.trace_list
     filtered_out_events = FilteredTraces.new([raw_events, user_code])
-    modify_stack(raw_events)
+    filtered_out_events.return_json_array
   end
 
   def empty?(any_structure)
@@ -381,11 +339,8 @@ def code_splitter(code)
   while x < executed_code_list.length
     temp = executed_code_list[x]
     temp = temp.strip
-    student_code << if temp.empty?
-                      'newline'
-                    else
-                      executed_code_list[x]
-                    end
+    student_code << executed_code_list[x] unless temp.empty?
+
     x += 1
   end
   student_code
