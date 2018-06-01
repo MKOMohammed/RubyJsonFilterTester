@@ -72,49 +72,53 @@ class FilteredTraces
   end
 end
 
-def generate_backend_trace(junit_test_file, files_path, peruser_files_path, student_file_name)
+def generate_backend_trace(junit_test_file,
+                           files_path,
+                           peruser_files_path,
+                           student_file_name)
   raw_code = junit_test_file
   raw_code.gsub! "\n", "\\n" + "\n"
   raw_code.gsub! "\t", "\\t"
   lines = raw_code.split("\n")
-  jUnit_test = ""
-  lines.each {|line| jUnit_test = jUnit_test + line}
+  jUnit_test = ''
+  lines.each { |line| jUnit_test = jUnit_test + line}
   jUnit_test.gsub!('\"', "\\" + '\"')
-  student_file = File.open(File.join(File.dirname(File.expand_path( __FILE__)),peruser_files_path, student_file_name), "w+")
-  #puts "file path #{student_file.path}"
-  fullString = '{' + "\n" + '"' + "usercode" + '"' + ':' + '"' + jUnit_test + '"' +
-      ',' + "\n" + '"' + "options" + '"' + ':' + '{' + '}' + ',' +
-      "\n" + '"' + "args" + '"' + ':' + '[' + ']' + ',' + "\n" + '"' +
-      "stdin" + '"' + ':' + '"' + '"' + "\n" + '}'
-  student_file.puts(fullString)
+  student_file = File.open(File.join(File.dirname(File.expand_path(__FILE__)),
+                                     peruser_files_path,
+                                     student_file_name), 'w+')
+  full_string = '{' + "\n" + '"' + 'usercode' + '"' + ':' + '"' + jUnit_test +
+                '"' + ',' + "\n" + '"' + 'options' + '"' + ':' + '{' + '}' \
+                ',' + "\n" + '"' + 'args' + '"' + ':' + '[' + ']' + ',' \
+                "\n" + '"' + 'stdin' + '"' + ':' + '"' + '"' + "\n" + '}'
+  student_file.puts(full_string)
   student_file.close
-  #puts "student file #{fullString}"
-  #Dir.chdir "/home/mdn/Research/OpenDSA-DevStack/OpenPOP/Java-Visualizer/frontAndBackendFiles/backendFiles"
-  #output = `./java/bin/java -cp .:cp:cp/javax.json-1.0.jar:java/lib/tools.jar traceprinter.InMemory < cp/traceprinter/output.txt` # the shell command
-  output = `java -cp .:cp:cp/javax.json-1.0.4.jar:java/tools.jar traceprinter.InMemory < cp/traceprinter/output.txt` # the shell command
-  #puts output
-  return output
-
+  `java -cp .:cp:cp/javax.json-1.0.4.jar:java/tools.jar traceprinter.InMemory < cp/traceprinter/output.txt` # the shell command
 end
 
-def seperate_and_filter_trace(junit_test_file, files_path, peruser_files_path, student_file_name)
-  code_and_trace = generate_backend_trace(junit_test_file, files_path, peruser_files_path,
+def seperate_and_filter_trace(junit_test_file,
+                              files_path,
+                              peruser_files_path,
+                              student_file_name)
+  code_and_trace = generate_backend_trace(junit_test_file,
+                                          files_path,
+                                          peruser_files_path,
                                           student_file_name)
-  splitter = '"' + "trace" + '"' + ':'
+  splitter = '"' + 'trace' + '"' + ':'
   user_code, whole_trace = code_and_trace.split(splitter)
 
   whole_trace = whole_trace[1..whole_trace.length]
 
   entire_json_file = code_analyzer(user_code, whole_trace)
 
-  return entire_json_file
+  entire_json_file
 end
 
+# no comment
 class Event
   attr_accessor :trace, :line_number
 
-  def initialize()
-    @trace = ""
+  def initialize
+    @trace = ''
     @line_number = 0
   end
 
@@ -127,6 +131,7 @@ class Event
   end
 end
 
+# no comment
 class EventManager
   attr_accessor :list_of_events, :filtered_events
 
@@ -136,20 +141,20 @@ class EventManager
   end
 
   def get_line_number(index)
-    if @list_of_events.length == 0
-      puts "list is empty"
+    if @list_of_events.length.zero?
+      puts 'list is empty'
     else
       temp_event = @list_of_events[index]
-      return temp_event.line_number
+      temp_event.line_number
     end
   end
 
-  def set_event (index, event)
+  def set_event(index, event)
     @filtered_events[index] = event
   end
 
   def get_event(index)
-    return @filtered_events[index]
+    @filtered_events[index]
   end
 
   def add_event(event)
@@ -158,16 +163,15 @@ class EventManager
 
   def trace_list
     my_list = []
-    (0...@list_of_events.length).each do |x|#@filtered_events.length).each do |x|
-      #temp = Event.new
-      temp = @list_of_events[x]#@filtered_events[x]
-      my_list<<temp.trace
+    (0...@list_of_events.length).each do |x|
+      temp = @list_of_events[x]
+      my_list << temp.trace
     end
-    return my_list
+    my_list
   end
 
   def print_events
-    if @filtered_events.length == 0
+    if @filtered_events.length.zero?
       puts 'List of events is empty'
     else
       (0..@filtered_events.length).each do |x|
@@ -185,9 +189,7 @@ class EventManager
       temp_string = modify.trace
       temp_line = modify.line_number
       line_number = temp_line % initial_line_number
-      if code[line_number] == 'newline'
-        line_number += 1
-      elsif code[line_number] == '\\t'
+      if code[line_number] == 'newline' || code[line_number] == '\\t'
         line_number += 1
       else
         original_line = temp_line.to_s
@@ -197,7 +199,6 @@ class EventManager
         modified_event.set_event(temp_string)
         modified_event.set_line(line_number)
         @list_of_events[event_number] = modified_event
-
         event_number += 1
       end
     end
@@ -214,7 +215,7 @@ def modify_stack (my_list)
     stacks = cur_event[1].split("],\"globals\"")
 
     stack_to_render = stacks[0]
-    old_stac << stacks[0]
+    old_stack << stacks[0]
 
     stack_point = ''
 
@@ -403,7 +404,7 @@ def main_method (file_path, student_full_code)
   my_test
 end
 
-def create_student_full_code()
+def create_student_full_code
   puts Dir.pwd
   @student_code = ''
   File.open('code.txt', 'rb') do |code_file|
@@ -422,4 +423,4 @@ def create_student_full_code()
   main_method('', full_student_code)
 end
 
-student_code = create_student_full_code()
+create_student_full_code()
