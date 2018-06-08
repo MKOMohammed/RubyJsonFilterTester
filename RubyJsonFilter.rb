@@ -49,7 +49,8 @@ class FilteredTraces
                                       trace_stack_ordered_variable_names,
                                       trace_stack_encoded_locals,
                                       trace_heap,
-                                      trace_code
+                                      trace_code,
+                                      trace.line
                                     ])
       @new_traces << filtered_trace
       trace_string = Yajl::Encoder.encode(filtered_trace)
@@ -71,6 +72,7 @@ class FilteredTraces
       trace['heap'][key] = value if value.length > 2
     end
     trace['code'] = params[3]
+    trace['lineNumber'] = params[4]
     trace
   end
 
@@ -99,7 +101,8 @@ def generate_backend_trace(junit_test_file,
                 "\n" + '"' + 'stdin' + '"' + ':' + '"' + '"' + "\n" + '}'
   student_file.puts(full_string)
   student_file.close
-  `java -cp .:cp:cp/javax.json-1.0.4.jar:java/tools.jar traceprinter.InMemory < cp/traceprinter/output.txt` # the shell command
+  output = `java -cp .:cp:cp/javax.json-1.0.4.jar:java/tools.jar traceprinter.InMemory < cp/traceprinter/output.txt` # the shell command
+  output
 end
 
 def seperate_and_filter_trace(junit_test_file,
@@ -356,6 +359,7 @@ def main_method (file_path, student_full_code)
   my_test = seperate_and_filter_trace(student_full_code, file_path,
                                       'cp/traceprinter/', 'output.txt')
   Dir.chdir('/home')
+  #puts my_test
   my_test
 end
 
