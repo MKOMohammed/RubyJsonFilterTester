@@ -41,6 +41,7 @@ class FilteredTraces
   def create_new_traces
     @traces.each do |trace|
       trace_stack = trace.stack_to_render[0]
+      unless(trace_stack.func_name.include? '<init>')
       trace_stack_ordered_variable_names = trace_stack.ordered_varnames
       trace_stack_encoded_locals = trace_stack.encoded_locals
       trace_heap = trace.heap
@@ -56,6 +57,7 @@ class FilteredTraces
       trace_string = Yajl::Encoder.encode(filtered_trace)
       @traces_json_array << trace_string
       @traces_json_string += trace_string + ','
+      end
     end
   end
 
@@ -196,6 +198,7 @@ class EventManager
     event_number = 0
     initial_line_number = @list_of_events[0].line_number
     @list_of_events.each do |modify|
+
       temp_string = modify.trace
       temp_line = modify.line_number
       line_number = temp_line % initial_line_number
