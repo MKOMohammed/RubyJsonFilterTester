@@ -69,7 +69,7 @@ class FilteredTraces
     end
     trace['heap'] = {}
     params[2].each_pair do |key, value|
-      trace['heap'][key] = value if value.length > 2
+      trace['heap'][key] = value if value.is_a?(Array) && value.length > 2
     end
     trace['code'] = params[3]
     trace['lineNumber'] = params[4]
@@ -77,7 +77,7 @@ class FilteredTraces
   end
 
   def return_json_array
-    @traces_json_array
+    @traces_json_string
   end
 end
 
