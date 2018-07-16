@@ -1,1 +1,4 @@
-    p = p.next;
+q = p;
+p = p.next;
+p.next.next = q;
+q.next = null;

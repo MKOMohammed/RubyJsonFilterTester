@@ -10,11 +10,14 @@ class Link
     public static Link CreateList(Object... elements)
     {
         Link current = null;
-        for(int i = elements.length -1; i>=0; i--)
+        current = new Link(elements[0],null);
+        Link head = current;
+        for(int i = 1; i < elements.length; i++)
         {
-            current = new Link(elements[i],current);
+            current.next = new Link(elements[i],null);
+            current = current.next;
         }
-        return current;
+        return head;
     }
     public String toString()
     {
@@ -54,9 +57,10 @@ public class Main
     public static void endTraceNow(){}
     public static void startTraceNow(){}
     public static void main(String[] args) {
-       Link p = Link.CreateList('A','B','C','C');
-       changeNext(p, p);
+       changeNext();
     }
-    public static Link changeNext(Link p, Link q)
+    public static Link changeNext()
     {
+        Link p = Link.CreateList('A', 'B', 'C');
+        Link q = null;
         startTraceNow();
