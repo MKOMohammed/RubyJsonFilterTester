@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Class: TraceAnalyzer
+  
+    &mdash; Documentation by YARD 0.9.15
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "TraceAnalyzer";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index (T)</a> &raquo;
+    
+    
+    <span class="title">TraceAnalyzer</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Class: TraceAnalyzer
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">TraceAnalyzer</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/RubyJsonFilter.rb</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>This class is responsible for creating the EventManager object to handle
+the traces. It filter the traces by extracting the part of the trace
+correspond to the student solution</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#empty%3F-instance_method" title="#empty? (instance method)">#<strong>empty?</strong>(any_structure)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#exe_Point_Finder-instance_method" title="#exe_Point_Finder (instance method)">#<strong>exe_Point_Finder</strong>(trace)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Extract the execution trace for the student solution only.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#extract_line_num-instance_method" title="#extract_line_num (instance method)">#<strong>extract_line_num</strong>(string)  &#x21d2; Numeric </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Extracts the code line number form the given trace string.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#handle_everything-instance_method" title="#handle_everything (instance method)">#<strong>handle_everything</strong>(user_code, in_trace)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>filter the traces by extracting the part of the trace correspond to the
+student solution.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>  &#x21d2; TraceAnalyzer </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of TraceAnalyzer.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#verify_exe_point-instance_method" title="#verify_exe_point (instance method)">#<strong>verify_exe_point</strong>(on, off, in_point)  &#x21d2; true or false </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Validate that the trace is for the student code.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    #<strong>initialize</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="TraceAnalyzer (class)">TraceAnalyzer</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a new instance of TraceAnalyzer</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+348
+349
+350</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/RubyJsonFilter.rb', line 348</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
+  <span class='ivar'>@event_manager</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="EventManager.html" title="EventManager (class)">EventManager</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="EventManager.html#initialize-instance_method" title="EventManager#initialize (method)">new</a></span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="empty?-instance_method">
+  
+    #<strong>empty?</strong>(any_structure)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+369
+370
+371</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/RubyJsonFilter.rb', line 369</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_empty?'><span class='object_link'><a href="top-level-namespace.html#empty%3F-instance_method" title="#empty? (method)">empty?</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_any_structure'>any_structure</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_any_structure'>any_structure</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='period'>.</span><span class='id identifier rubyid_zero?'>zero?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="exe_Point_Finder-instance_method">
+  
+    #<strong>exe_Point_Finder</strong>(trace)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Extract the execution trace for the student solution only. THis is done by
+finding the execution trace for the code that is surrounded by
+startTraceNow and endTraceNow function calls.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>trace</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the complete execution trace</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/RubyJsonFilter.rb', line 429</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_exe_Point_Finder'>exe_Point_Finder</span><span class='lparen'>(</span><span class='id identifier rubyid_trace'>trace</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_symbol_stack'>symbol_stack</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_other_list'>other_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_top_symbol'>top_symbol</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_exe'>exe</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_exe_point'>exe_point</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_on'>on</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='id identifier rubyid_off'>off</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='id identifier rubyid_trace'>trace</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+    <span class='id identifier rubyid_current_symbol'>current_symbol</span> <span class='op'>=</span> <span class='id identifier rubyid_i'>i</span>
+    <span class='id identifier rubyid_exe_point'>exe_point</span> <span class='op'>+=</span> <span class='id identifier rubyid_current_symbol'>current_symbol</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>{</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>or</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>or</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>(</span><span class='tstring_end'>&#39;</span></span>
+      <span class='id identifier rubyid_symbol_stack'>symbol_stack</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_i'>i</span>
+    <span class='kw'>elsif</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>}</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>or</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>)</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>or</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>]</span><span class='tstring_end'>&#39;</span></span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_empty?'><span class='object_link'><a href="top-level-namespace.html#empty%3F-instance_method" title="#empty? (method)">empty?</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_symbol_stack'>symbol_stack</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='kw'>false</span>
+        <span class='id identifier rubyid_top_symbol'>top_symbol</span> <span class='op'>=</span> <span class='id identifier rubyid_symbol_stack'>symbol_stack</span><span class='period'>.</span><span class='id identifier rubyid_pop'>pop</span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>}</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>and</span> <span class='id identifier rubyid_top_symbol'>top_symbol</span> <span class='op'>!=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>{</span><span class='tstring_end'>&#39;</span></span>
+          <span class='kw'>next</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>elsif</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>,</span><span class='tstring_end'>&#39;</span></span>
+      <span class='id identifier rubyid_other_list'>other_list</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_exe_point'>exe_point</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_symbol_stack'>symbol_stack</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='period'>.</span><span class='id identifier rubyid_zero?'>zero?</span>
+        <span class='id identifier rubyid_other_list'>other_list</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_thing'>thing</span><span class='op'>|</span>
+          <span class='id identifier rubyid_exe'>exe</span> <span class='op'>+=</span> <span class='id identifier rubyid_thing'>thing</span>
+        <span class='kw'>end</span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_exe'>exe</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>startTraceNow</span><span class='tstring_end'>&#39;</span></span>
+          <span class='id identifier rubyid_on'>on</span> <span class='op'>=</span> <span class='kw'>true</span>
+          <span class='id identifier rubyid_exe'>exe</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+          <span class='id identifier rubyid_exe_point'>exe_point</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+          <span class='id identifier rubyid_other_list'>other_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+        <span class='kw'>elsif</span> <span class='id identifier rubyid_exe'>exe</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>endTraceNow</span><span class='tstring_end'>&#39;</span></span>
+          <span class='id identifier rubyid_off'>off</span> <span class='op'>=</span> <span class='kw'>true</span>
+          <span class='kw'>return</span>
+        <span class='kw'>else</span>
+          <span class='id identifier rubyid_flag'>flag</span> <span class='op'>=</span> <span class='id identifier rubyid_verify_exe_point'>verify_exe_point</span><span class='lparen'>(</span><span class='id identifier rubyid_on'>on</span><span class='comma'>,</span> <span class='id identifier rubyid_off'>off</span><span class='comma'>,</span> <span class='id identifier rubyid_exe'>exe</span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_on'>on</span> <span class='op'>=</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='id identifier rubyid_flag'>flag</span> <span class='op'>==</span> <span class='kw'>false</span>
+          <span class='id identifier rubyid_exe'>exe</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+          <span class='id identifier rubyid_exe_point'>exe_point</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+          <span class='id identifier rubyid_other_list'>other_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+        <span class='kw'>end</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_exe_point'>exe_point</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+      <span class='kw'>end</span>
+
+    <span class='kw'>else</span>
+      <span class='kw'>next</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="extract_line_num-instance_method">
+  
+    #<strong>extract_line_num</strong>(string)  &#x21d2; <tt>Numeric</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Extracts the code line number form the given trace string</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>string</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>trace string</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Numeric</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the line number</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/RubyJsonFilter.rb', line 380</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_extract_line_num'>extract_line_num</span><span class='lparen'>(</span><span class='id identifier rubyid_string'>string</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='id identifier rubyid_string'>string</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&quot;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_tr!'>tr!</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>{</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_tr!'>tr!</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>:</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_tr!'>tr!</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>,</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_tr!'>tr!</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_tr!'>tr!</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>(</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_tr!'>tr!</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>]</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_tr!'>tr!</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>}</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_tr!'>tr!</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_new_line'>new_line</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='id identifier rubyid_new_line'>new_line</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='kw'>if</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_numeric?'>numeric?</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_new_line'>new_line</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="handle_everything-instance_method">
+  
+    #<strong>handle_everything</strong>(user_code, in_trace)  &#x21d2; <tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>filter the traces by extracting the part of the trace correspond to the
+student solution</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user_code</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the student solution</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>in_trace</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the complete execution trace</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the trace string that will be used to visualize the student solution</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+361
+362
+363
+364
+365
+366
+367</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/RubyJsonFilter.rb', line 361</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_handle_everything'>handle_everything</span><span class='lparen'>(</span><span class='id identifier rubyid_user_code'>user_code</span><span class='comma'>,</span> <span class='id identifier rubyid_in_trace'>in_trace</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_exe_Point_Finder'>exe_Point_Finder</span><span class='lparen'>(</span><span class='id identifier rubyid_in_trace'>in_trace</span><span class='rparen'>)</span>
+  <span class='ivar'>@event_manager</span><span class='period'>.</span><span class='id identifier rubyid_modify_lines'>modify_lines</span><span class='lparen'>(</span><span class='id identifier rubyid_user_code'>user_code</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raw_events'>raw_events</span> <span class='op'>=</span> <span class='ivar'>@event_manager</span><span class='period'>.</span><span class='id identifier rubyid_trace_list'>trace_list</span>
+  <span class='id identifier rubyid_filtered_out_events'>filtered_out_events</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="FilteredTraces.html" title="FilteredTraces (class)">FilteredTraces</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="FilteredTraces.html#initialize-instance_method" title="FilteredTraces#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='id identifier rubyid_raw_events'>raw_events</span><span class='comma'>,</span> <span class='id identifier rubyid_user_code'>user_code</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_filtered_out_events'>filtered_out_events</span><span class='period'>.</span><span class='id identifier rubyid_return_json_string'>return_json_string</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="verify_exe_point-instance_method">
+  
+    #<strong>verify_exe_point</strong>(on, off, in_point)  &#x21d2; <tt>true or false</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Validate that the trace is for the student code. Requiers reimplementing</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>on</span>
+      
+      
+        <span class='type'>(<tt>true or false</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>true means that this trace after the stratTraceNow call</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>off</span>
+      
+      
+        <span class='type'>(<tt>true or false</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>&lt;description&gt;</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>in_point</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the trace of the student code</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true or false</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>true means that the trace is for the student code</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/RubyJsonFilter.rb', line 406</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_verify_exe_point'>verify_exe_point</span><span class='lparen'>(</span><span class='id identifier rubyid_on'>on</span><span class='comma'>,</span> <span class='id identifier rubyid_off'>off</span><span class='comma'>,</span> <span class='id identifier rubyid_in_point'>in_point</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_add_exe_point'>add_exe_point</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='id identifier rubyid_exe_trace'>exe_trace</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Event.html" title="Event (class)">Event</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Event.html#initialize-instance_method" title="Event#initialize (method)">new</a></span></span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_on'>on</span> <span class='op'>==</span> <span class='kw'>true</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_off'>off</span> <span class='op'>==</span> <span class='kw'>false</span>
+    <span class='id identifier rubyid_exe_trace'>exe_trace</span><span class='period'>.</span><span class='id identifier rubyid_set_event'>set_event</span><span class='lparen'>(</span><span class='id identifier rubyid_in_point'>in_point</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_exe_trace'>exe_trace</span><span class='period'>.</span><span class='id identifier rubyid_set_line'>set_line</span><span class='lparen'>(</span><span class='id identifier rubyid_extract_line_num'>extract_line_num</span><span class='lparen'>(</span><span class='id identifier rubyid_in_point'>in_point</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='ivar'>@event_manager</span><span class='period'>.</span><span class='id identifier rubyid_add_event'>add_event</span><span class='lparen'>(</span><span class='id identifier rubyid_exe_trace'>exe_trace</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_add_exe_point'>add_exe_point</span> <span class='op'>=</span> <span class='kw'>true</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_on'>on</span> <span class='op'>==</span> <span class='kw'>false</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_off'>off</span> <span class='op'>==</span> <span class='kw'>false</span>
+    <span class='id identifier rubyid_add_exe_point'>add_exe_point</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_add_exe_point'>add_exe_point</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_add_exe_point'>add_exe_point</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Mon Aug  6 12:53:41 2018 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.15 (ruby-2.3.1).
+</div>
+
+    </div>
+  </body>
+</html>
